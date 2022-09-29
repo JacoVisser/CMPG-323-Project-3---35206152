@@ -7,40 +7,29 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DeviceManagement_WebApp.Data;
 using DeviceManagement_WebApp.Models;
+using DeviceManagement_WebApp.Repositories;
 
 namespace DeviceManagement_WebApp.Controllers
 {
     public class ZonesController : Controller
     {
-        private readonly ConnectedOfficeContext _context;
+        private readonly IZoneRepository _zoneRepository;
 
-        public ZonesController(ConnectedOfficeContext context)
+        public ZonesController(IZoneRepository zoneRepository)
         {
-            _context = context;
+            _zoneRepository = zoneRepository;
         }
 
         // GET: Zones
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Zone.ToListAsync());
+            return View(_zoneRepository.GetAll());
         }
 
         // GET: Zones/Details/5
-        public async Task<IActionResult> Details(Guid? id)
+        public async Task<IActionResult> Details(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var zone = await _context.Zone
-                .FirstOrDefaultAsync(m => m.ZoneId == id);
-            if (zone == null)
-            {
-                return NotFound();
-            }
-
-            return View(zone);
+            return View(_zoneRepository.GetByID(id));
         }
 
         // GET: Zones/Create

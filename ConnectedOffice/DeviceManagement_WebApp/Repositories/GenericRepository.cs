@@ -37,7 +37,7 @@ namespace DeviceManagement_WebApp.Repositories
             return _context.Set<T>().ToList();
         }
 
-        public T GetById(int id) 
+        public T GetByID(int id)
         {
             return _context.Set<T>().Find(id);
         }
